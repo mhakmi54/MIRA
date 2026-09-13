@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="مشروع تفاعلي لمادة لغتي عن السيرة النبوية للصف السادس الابتدائي.">
+  <title>سيرة النور والهدى ﷺ | مشروع مادة لغتي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2c5e3b;
+      --primary-dark: #1e3f27;
+      --gold: #b88a10;
+      --gold-light: #f8f0d8;
+      --background: #f7f9f6;
+      --card: #ffffff;
+      --text: #27302a;
+      --muted: #5f6c64;
+      --border: #dce5dc;
+      --success: #256b38;
+      --danger: #a13830;
+      --shadow: 0 10px 30px rgba(21, 42, 28, .09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--text);
+      font-family: Tajawal, Tahoma, sans-serif;
+    }
+    button { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid #1769aa;
+      outline-offset: 3px;
+    }
+    .skip-link {
+      position: absolute; top: -60px; right: 16px; z-index: 10;
+      background: #fff; color: var(--primary-dark); padding: 10px 14px;
+      border-radius: 0 0 10px 10px; font-weight: 700;
+    }
+    .skip-link:focus { top: 0; }
+
+    header {
+      position: relative; overflow: hidden; text-align: center; color: #fff;
+      padding: 52px 20px 46px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 0 0 34px 34px; box-shadow: var(--shadow);
+    }
+    header::before, header::after {
+      content: ""; position: absolute; border: 1px solid rgba(255,255,255,.18); border-radius: 50%;
+    }
+    header::before { width: 300px; height: 300px; left: -120px; top: -160px; }
+    header::after { width: 240px; height: 240px; right: -90px; bottom: -145px; }
+    .badge {
+      display: inline-block; position: relative; background: #f5df91; color: #29311d;
+      padding: 7px 18px; border-radius: 999px; font-weight: 800; font-size: .92rem; margin-bottom: 16px;
+    }
+    h1 { position: relative; margin: 0 0 10px; font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; }
+    .subtitle { position: relative; margin: 0; font-size: 1.05rem; opacity: .95; }
+
+    .topbar {
+      max-width: 1000px; margin: 0 auto; padding: 16px 18px 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .crumb { margin: 0; color: var(--muted); font-size: .95rem; }
+    .home-mini, .print-btn, .back-btn, .primary-btn, .next-btn {
+      border: 0; border-radius: 999px; padding: 11px 18px; cursor: pointer;
+      font-weight: 700; transition: transform .2s, background-color .2s, box-shadow .2s;
+    }
+    .home-mini, .print-btn { background: #fff; color: var(--primary); box-shadow: 0 4px 15px rgba(0,0,0,.06); }
+    .home-mini:hover, .print-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .home-mini[hidden] { display: none; }
+    .back-btn, .primary-btn, .next-btn { margin-top: 24px; background: var(--primary); color: #fff; }
+    .back-btn:hover, .primary-btn:hover, .next-btn:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); }
+    .next-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 28px 18px 45px; }
+    .section { display: none; animation: fade .35s ease; }
+    .section.active { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .menu-intro { text-align: center; margin: 8px 0 25px; }
+    .menu-intro h2 { margin: 0; color: var(--primary); font-size: 1.75rem; }
+    .menu-intro p { margin: 8px 0 0; color: var(--muted); }
+    .goal-note {
+      max-width: 680px; margin: 20px auto 0; padding: 13px 16px;
+      border-right: 4px solid var(--gold); background: #fffdf6; color: #45412e; border-radius: 12px; line-height: 1.8;
+    }
+    .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 18px; }
+    .menu-card {
+      min-height: 202px; border: 2px solid transparent; width: 100%; background: var(--card);
+      border-radius: 22px; padding: 25px 18px; text-align: center; cursor: pointer;
+      box-shadow: var(--shadow); color: inherit; transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .menu-card:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 14px 32px rgba(21,42,28,.14); }
+    .menu-card .icon { display: block; font-size: 2.8rem; margin-bottom: 10px; }
+    .menu-card h3 { color: var(--primary); font-size: 1.24rem; margin: 0 0 7px; }
+    .menu-card p { color: var(--muted); font-size: .94rem; line-height: 1.7; margin: 0; }
+
+    .content-card { background: var(--card); border-radius: 24px; padding: 30px; box-shadow: var(--shadow); }
+    .content-card h2 { color: var(--primary); font-size: 1.7rem; margin: 0 0 20px; border-bottom: 3px solid var(--gold); padding-bottom: 10px; display: inline-block; }
+    .content-card h3 { color: var(--primary-dark); margin: 23px 0 9px; }
+    .content-card p, .content-card li { font-size: 1.04rem; line-height: 2; }
+    .content-card p { margin: 0 0 12px; }
+    .content-card ul { padding-right: 24px; margin: 8px 0; }
+    .hint { color: var(--muted); font-size: .96rem !important; }
+
+    .timeline { position: relative; margin: 18px 0; }
+    .timeline::before { content: ""; position: absolute; right: 19px; top: 20px; bottom: 20px; width: 3px; background: #d7c27a; }
+    .timeline-item {
+      position: relative; display: block; width: 100%; padding: 4px 55px 18px 0; border: 0;
+      background: transparent; text-align: right; cursor: pointer;
+    }
+    .timeline-dot { position: absolute; right: 8px; top: 18px; width: 25px; height: 25px; border-radius: 50%; background: var(--gold); border: 5px solid #f7f1dc; }
+    .timeline-box {
+      display: block; width: 100%; background: #fbfcfa; border: 1px solid var(--border);
+      border-radius: 16px; padding: 15px 48px 15px 15px; transition: border-color .2s, background .2s;
+    }
+    .timeline-item:hover .timeline-box, .timeline-item[aria-expanded="true"] .timeline-box { border-color: var(--gold); background: #fffdf8; }
+    .timeline-box strong { display: block; color: var(--primary); font-size: 1.08rem; }
+    .expand-icon { position: absolute; left: 17px; top: 18px; color: var(--primary); font-size: 1.15rem; transition: transform .2s; }
+    .timeline-item[aria-expanded="true"] .expand-icon { transform: rotate(180deg); }
+    .detail { display: none; margin: 10px 0 0; color: #4e5b53; line-height: 1.9; }
+    .timeline-item[aria-expanded="true"] .detail { display: block; }
+
+    .value-grid, .word-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+    .value-card {
+      min-height: 176px; padding: 20px; border-radius: 18px; background: #fbfcfa; border: 1px solid var(--border);
+      color: inherit; text-align: center; cursor: pointer; transition: border-color .2s, background .2s, transform .2s;
+    }
+    .value-card:hover, .value-card[aria-expanded="true"] { border-color: var(--gold); background: #fffdf8; transform: translateY(-2px); }
+    .value-card .vicon { display: block; font-size: 2.2rem; }
+    .value-card h3 { margin: 7px 0; color: var(--primary); }
+    .value-card p { display: none; margin: 0; font-size: .94rem; line-height: 1.75; }
+    .value-card[aria-expanded="true"] p { display: block; }
+    .word { border-right: 5px solid var(--gold); padding: 16px; border-radius: 13px; background: #fbfcfa; }
+    .word strong { color: var(--primary); }
+
+    .quiz-wrap { text-align: center; }
+    .progress-label { display: flex; justify-content: space-between; align-items: center; margin: 18px 0 7px; color: var(--muted); font-weight: 700; font-size: .92rem; }
+    .progress { height: 11px; background: #e3eae3; border-radius: 10px; overflow: hidden; }
+    .progress span { display: block; height: 100%; background: var(--gold); width: 0; transition: width .3s; }
+    .question { font-size: 1.25rem; font-weight: 700; color: var(--primary-dark); margin: 22px 0; }
+    .answers { display: grid; gap: 12px; }
+    .answer { border: 2px solid #dce5dc; background: #fff; padding: 14px; border-radius: 15px; cursor: pointer; text-align: right; color: var(--text); transition: border-color .2s, background .2s; }
+    .answer:hover:not(:disabled) { border-color: var(--gold); background: #fffdf5; }
+    .answer.correct { border-color: var(--success); background: #eef8f0; }
+    .answer.wrong { border-color: var(--danger); background: #fff2f0; }
+    .answer:disabled { cursor: default; }
+    .feedback { min-height: 30px; margin-top: 14px; font-weight: 700; }
+    .feedback.good { color: var(--success); }.feedback.bad { color: var(--danger); }
+    .quiz-actions { min-height: 55px; }
+    .result { display: none; padding: 25px; background: #fbfcfa; border-radius: 20px; margin-top: 18px; }
+    .score { font-size: 2.5rem; color: var(--primary); font-weight: 800; }
+    .source-note { margin-top: 18px !important; padding: 12px 15px; background: #f4f7f3; border-radius: 12px; color: var(--muted); font-size: .95rem !important; }
+    .reflection { margin-top: 20px; padding: 18px; background: #fffdf7; border: 1px solid #ebdfb4; border-radius: 16px; }
+    .reflection h3 { margin-top: 0; }
+    .reflection ul { margin-bottom: 0; }
+
+    footer { text-align: center; background: #fff; border-top: 1px solid #e8ece7; padding: 20px; color: #647069; font-size: .9rem; }
+    footer p { margin: 4px; }
+    .student-line { color: var(--primary); font-weight: 700; }
+
+    @media (max-width: 600px) {
+      .topbar { align-items: flex-start; }.crumb { padding-top: 10px; }
+      .print-btn { display: none; }.content-card { padding: 21px; }
+      .grid-menu { grid-template-columns: 1fr 1fr; gap: 12px; }.menu-card { min-height: 185px; padding: 19px 10px; }
+      .menu-card .icon { font-size: 2.4rem; }.timeline-item { padding-right: 47px; }.timeline-box { padding-right: 37px; }
+    }
+    @media (max-width: 420px) { .grid-menu { grid-template-columns: 1fr; }.topbar { padding-top: 12px; } }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+    @page { size: A4; margin: 12mm; }
+    @media print {
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { background: #fff; color: #172019; font-size: 11pt; }
+      .skip-link, .topbar, .back-btn, .primary-btn, .next-btn, .home-mini { display: none !important; }
+      header { border-radius: 0; box-shadow: none; padding: 18px; }
+      .section { display: block !important; opacity: 1 !important; transform: none !important; animation: none !important; break-inside: avoid; margin-bottom: 12mm; }
+      .content-card, .menu-card { box-shadow: none; border: 1px solid #aeb8ae; background: #fff; }
+      .menu-card { min-height: auto; break-inside: avoid; }
+      .menu-card h3, .menu-card p, .content-card h2, .content-card h3, .content-card p, .content-card li, .word, .word strong { color: #172019 !important; }
+      .menu-card .icon, .menu-card h3, .menu-card p { display: block !important; visibility: visible !important; }
+      .detail, .value-card p { display: block !important; visibility: visible !important; }
+      .timeline, .timeline-item, .value-card, .word { break-inside: avoid; page-break-inside: avoid; }
+      .timeline-item { display: block !important; width: 100%; }
+      .timeline-box { display: block !important; width: 100%; }
+      .expand-icon { display: none; }
+      .result { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">تجاوز إلى المحتوى</a>
+
+  <header>
+    <div class="badge">مادة لغتي • الصف السادس الابتدائي</div>
+    <h1>سيرة النور والهدى ﷺ</h1>
+    <p class="subtitle">رحلة تعليمية تفاعلية في السيرة النبوية</p>
+  </header>
+
+  <nav class="topbar" aria-label="التنقل في المشروع">
+    <button id="homeButton" class="home-mini" type="button" aria-label="العودة إلى القائمة الرئيسية" onclick="showSection('home-section')">⌂ الرئيسية</button>
+    <p id="breadcrumb" class="crumb" aria-live="polite">القائمة الرئيسية</p>
+    <button class="print-btn" type="button" onclick="window.print()">🖨️ طباعة المشروع</button>
+  </nav>
+
+  <main id="main-content" tabindex="-1">
+    <section id="home-section" class="section active" aria-labelledby="home-title">
+      <div class="menu-intro">
+        <h2 id="home-title">🌿 اختاري رحلتك التعليمية</h2>
+        <p>تعرّفي، استكشفي، ثم اختبري معلوماتك.</p>
+        <p class="goal-note"><strong>الهدف التعليمي:</strong> أن تتعرّف الطالبة إلى أبرز محطات السيرة النبوية، وتستنتج منها قيمًا تستطيع تطبيقها في حياتها.</p>
+      </div>
+      <div class="grid-menu">
+        <button class="menu-card" type="button" onclick="showSection('intro-section')"><span class="icon" aria-hidden="true">📖</span><h3>مقدمة المشروع</h3><p>تعريف بالمشروع وأهدافه التعليمية.</p></button>
+        <button class="menu-card" type="button" onclick="showSection('bio-section')"><span class="icon" aria-hidden="true">🌟</span><h3>رحلة السيرة</h3><p>محطات مهمة من المولد والنشأة إلى فتح مكة.</p></button>
+        <button class="menu-card" type="button" onclick="showSection('traits-section')"><span class="icon" aria-hidden="true">💎</span><h3>الشمائل والأخلاق</h3><p>نماذج من أخلاق النبي ﷺ وصفاته.</p></button>
+        <button class="menu-card" type="button" onclick="showSection('moments-section')"><span class="icon" aria-hidden="true">🕊️</span><h3>مواقف ودروس</h3><p>مواقف عظيمة وما نتعلمه منها في حياتنا.</p></button>
+        <button class="menu-card" type="button" onclick="showSection('values-section')"><span class="icon" aria-hidden="true">🌱</span><h3>قيم نتعلمها</h3><p>قيم عملية في المدرسة والمنزل.</p></button>
+        <button class="menu-card" type="button" onclick="showSection('words-section')"><span class="icon" aria-hidden="true">📝</span><h3>كلمات ومعانٍ</h3><p>مفردات تساعد على فهم موضوع السيرة.</p></button>
+        <button class="menu-card" type="button" onclick="showSection('quiz-section')"><span class="icon" aria-hidden="true">🎯</span><h3>تحدي السيرة</h3><p>اختبري معلوماتك واحصلي على نتيجتك.</p></button>
+        <button class="menu-card" type="button" onclick="showSection('sources-section')"><span class="icon" aria-hidden="true">📚</span><h3>المصادر والمراجع</h3><p>مصادر المشروع ومراجع التعلّم.</p></button>
+      </div>
+    </section>
+
+    <section id="intro-section" class="section" aria-labelledby="intro-title">
+      <div class="content-card">
+        <h2 id="intro-title">مقدمة المشروع</h2>
+        <p>الحمد لله رب العالمين، والصلاة والسلام على خاتم الأنبياء والمرسلين، نبينا محمد وعلى آله وصحبه أجمعين.</p>
+        <p>هذا المشروع ضمن مادة <strong>لغتي</strong>، ويقدم السيرة النبوية بطريقة تعليمية تفاعلية تساعد على التعرّف إلى محطات من حياة النبي ﷺ، واستلهام القيم والأخلاق منها.</p>
+        <p>فالهدف ليس معرفة الأحداث فقط، بل التأمل في الدروس التي يمكن أن نطبقها في حياتنا اليومية، مثل الصدق والرحمة والأمانة والتواضع.</p>
+        <div class="reflection"><h3>في نهاية الرحلة</h3><p>سأسأل نفسي: أيُّ قيمة من هذه القيم سأطبّقها اليوم؟ وكيف سيظهر ذلك في مدرستي أو منزلي؟</p></div>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+
+    <section id="bio-section" class="section" aria-labelledby="bio-title">
+      <div class="content-card">
+        <h2 id="bio-title">🌟 رحلة في السيرة النبوية</h2>
+        <p class="hint">اضغطي على كل محطة لقراءة نبذة مختصرة عنها.</p>
+        <div class="timeline">
+          <button class="timeline-item" type="button" aria-expanded="false"><span class="timeline-dot" aria-hidden="true"></span><span class="timeline-box"><strong>🌿 المولد والنشأة</strong><span class="expand-icon" aria-hidden="true">⌄</span><span class="detail">في قلب مكة المكرمة، وفي يوم الاثنين من شهر ربيع الأول في عام الفيل، وُلد النبي محمد ﷺ يتيم الأب، حيث مات والده عبد الله وهو جنين في بطن أمه آمنة بنت وهب. وعندما وضعته، استبشر به جده عبد المطلب خيراً، وسماه "محمداً" ليكون محموداً في الأرض وفي السماء، ثم أرسله إلى ديار بني سعد في البادية ليرضع في أحضان حليمة السعدية، لينشأ هناك فصيح اللسان، قوي البنية، سليم الصدر.عاش النبي ﷺ طفولة مليئة بالتحولات والدروس؛ فعاد إلى أمه في الرابعة من عمره، لكنها توفيت وهو في السادسة، لينتقل إلى رعاية جده الحنون عبد المطلب، الذي فارق الحياة أيضاً والنبي ﷺ في الثامنة من عمره. كفله بعد ذلك عمه أبو طالب، وضمه إلى أبنائه ورعاه وحماه، فبدأ النبي ﷺ يعتمد على نفسه منذ صغره، فرعى الغنم لأهل مكة، ثم خرج في التجارة إلى الشام، واكتسب بين قومه مكانة عظيمة وشهرة واسعة، فلم يُعرف عنه إلا الصدق والأمانة، حتى لقبوه قبل البعثة بـ "الصادق الأمين".</span></span></button>
+          <button class="timeline-item" type="button" aria-expanded="false"><span class="timeline-dot" aria-hidden="true"></span><span class="timeline-box"><strong>🤝 الصادق الأمين</strong><span class="expand-icon" aria-hidden="true">⌄</span><span class="detail">نشأ ﷺ ناصع السيرة، نقي السريرة، فاستوطن قلوب قريش قبل أن يجهر بدعوتهم؛ إذ لم تجرِ على لسانه كذبة قط، ولم تُسجل في كتاب حياته خيانة لأمانة أو غدر لعه</span></span></button>
+          <button class="timeline-item" type="button" aria-expanded="false"><span class="timeline-dot" aria-hidden="true"></span><span class="timeline-box"><strong>📖 البعثة النبوية</strong><span class="expand-icon" aria-hidden="true">⌄</span><span class="detail">بدأ نزول الوحي عليه ﷺ وهو في سن الأربعين، وبدأ دعوة الناس إلى توحيد الله وعبادته.</span></span></button>
+          <button class="timeline-item" type="button" aria-expanded="false"><span class="timeline-dot" aria-hidden="true"></span><span class="timeline-box"><strong>🕊️ الهجرة إلى المدينة</strong><span class="expand-icon" aria-hidden="true">⌄</span><span class="detail">عندما اشتد أذى قريش على النبي ﷺ وأصحابه في مكة، وأحكموا حصارهم عليه بل وتآمروا على قتله، أذن الله له بالهجرة إلى يثرب، فخرج في عتمة الليل متخفيًا مع رفيقه أبي بكر الصديق رضي الله عنه، تاركًا خلفه أحب البقاع إلى قلبه وهو ينظر إلى مكة قائلًا: "ما أطيبكِ من بلد وأحبكِ إليَّ، ولولا أن قومي أخرجوني منكِ ما سكنتُ غيركِ"..</span></span></button>
+          <button class="timeline-item" type="button" aria-expanded="false"><span class="timeline-dot" aria-hidden="true"></span><span class="timeline-box"><strong>🕋 فتح مكة</strong><span class="expand-icon" aria-hidden="true">⌄</span><span class="detail">عندما دخل النبي ﷺ مكة فاتحًا في العام الثامن الهجري، وخضعت له قريش التي ناصبته العداء، وعذبته، وأخرجته وأصحابه من ديارهم، وقف فيهم خطيبًا عند الكعبة وقال كلمته الشهيرة: "يا معشر قريش، ما ترون أني فاعل بكم؟"، فقالوا: "خيرًا، أخ كريم، وابن أخ كريم"، فقال ﷺ: "اذهبوا فأنتم الطلقاء".</span></span></button>
+        </div>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+
+    <section id="traits-section" class="section" aria-labelledby="traits-title">
+      <div class="content-card">
+        <h2 id="traits-title">💎 الشمائل والأخلاق</h2>
+        <p>لم يكن النبي محمد ﷺ مجرد قائدٍ عظيم، بل كان للدنيا بأسرها معلماً ومثالاً يُقتدى به في مكارم الأخلاق؛ فقد مدحه ربه جل وعلا في القرآن الكريم بآية عظيمة تحفظونها وتقرؤونها دائماً: ﴿وَإِنَّكَ لَعَلَى خُلُقٍ عَظِيمٍ﴾. وفي حياته اليومية مع أصحابه وأهله، ظهرت هذه الأخلاق الرفيعة لنتعلم منه كل يوم:</p>
+        <ul>
+          <li><strong>الرحمة:</strong> كان رحيمًا بالناس والأطفال والضعفاء.</li>
+          <li><strong>التواضع:</strong> كان متواضعًا ويشارك أصحابه ويخدم أهله.</li>
+          <li><strong>الكرم:</strong> كان كثير العطاء والجود.</li>
+          <li><strong>الشجاعة:</strong> كان ثابتًا في المواقف الصعبة.</li>
+          <li><strong>الصدق والأمانة:</strong> عُرف بهما قبل البعثة.</li>
+        </ul>
+        <p>قال الله تعالى: <em>﴿وَإِنَّكَ لَعَلَى خُلُقٍ عَظِيمٍ﴾</em> <strong>(سورة القلم: 4)</strong>.</p>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+
+    <section id="moments-section" class="section" aria-labelledby="moments-title">
+      <div class="content-card">
+        <h2 id="moments-title">🕊️ مواقف ودروس</h2>
+        <h3>🕋 العفو يوم فتح مكة</h3><p>أظهر النبي ﷺ عفوًا وصفحًا عظيمًا عند فتح مكة، فكان في ذلك درس في التسامح والعفو عند المقدرة.</p>
+        <h3>👶 الرفق بالأطفال</h3><p>كان ﷺ رحيمًا بالأطفال، يلاطفهم ويهتم بهم، ومن ذلك أنه كان يخفف الصلاة عند سماع بكاء الصبي رحمةً بأمه.</p>
+        <h3>⚖️ العدل</h3><p>أكد ﷺ أن العدل حق للجميع، وأن القرب والمكانة لا يغيران حكم الحق.</p>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+
+    <section id="values-section" class="section" aria-labelledby="values-title">
+      <div class="content-card">
+        <h2 id="values-title">🌱 قيم نتعلمها</h2>
+        <p class="hint">اضغطي على القيمة لتظهِر طريقة بسيطة لتطبيقها.</p>
+        <div class="value-grid">
+          <button class="value-card" type="button" aria-expanded="false"><span class="vicon" aria-hidden="true">🤍</span><h3>الرحمة</h3><p>أرفق بمن حولي وأساعد من يحتاج إلى المساعدة.</p></button>
+          <button class="value-card" type="button" aria-expanded="false"><span class="vicon" aria-hidden="true">⭐</span><h3>الصدق</h3><p>أقول الحقيقة وأبتعد عن الكذب في مواقفي اليومية.</p></button>
+          <button class="value-card" type="button" aria-expanded="false"><span class="vicon" aria-hidden="true">🔐</span><h3>الأمانة</h3><p>أحافظ على ما أُؤتمن عليه وأؤدي واجباتي.</p></button>
+          <button class="value-card" type="button" aria-expanded="false"><span class="vicon" aria-hidden="true">🌿</span><h3>التواضع</h3><p>أحترم الآخرين ولا أتعالى عليهم.</p></button>
+          <button class="value-card" type="button" aria-expanded="false"><span class="vicon" aria-hidden="true">⚖️</span><h3>العدل</h3><p>أعامل الآخرين بالإنصاف ولا أظلم أحدًا.</p></button>
+          <button class="value-card" type="button" aria-expanded="false"><span class="vicon" aria-hidden="true">🤝</span><h3>التسامح</h3><p>أعفو وأتجاوز عن الأخطاء عندما يكون العفو مناسبًا.</p></button>
+        </div>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+
+    <section id="words-section" class="section" aria-labelledby="words-title">
+      <div class="content-card">
+        <h2 id="words-title">📝 كلمات ومعانٍ</h2>
+        <div class="word-grid">
+          <div class="word"><strong>السيرة</strong><br>أخبار حياة الإنسان وأحواله.</div><div class="word"><strong>البعثة</strong><br>إرسال الله نبيًا برسالته إلى الناس.</div><div class="word"><strong>الهجرة</strong><br>انتقال النبي ﷺ وأصحابه من مكة إلى المدينة.</div><div class="word"><strong>الشمائل</strong><br>الصفات والأخلاق والخصال.</div><div class="word"><strong>المؤاخاة</strong><br>جعل المسلمين إخوة متعاونين متحابين.</div><div class="word"><strong>العفو</strong><br>ترك المؤاخذة على الخطأ والصفح عنه.</div>
+        </div>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+
+    <section id="quiz-section" class="section" aria-labelledby="quiz-title">
+      <div class="content-card quiz-wrap">
+        <h2 id="quiz-title">🎯 تحدي السيرة النبوية</h2><p>أجيبي عن الأسئلة، ثم انتقلي بنفسك إلى السؤال التالي بعد قراءة التصحيح.</p>
+        <div class="progress-label"><span id="questionCount">السؤال 1 من 5</span><span id="progressPercent">0٪ مكتمل</span></div>
+        <div id="progressBar" class="progress" role="progressbar" aria-label="تقدم الاختبار" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><span></span></div>
+        <div id="quizBox"><div id="question" class="question"></div><div id="answers" class="answers"></div><div id="feedback" class="feedback" aria-live="polite"></div><div class="quiz-actions"><button id="nextButton" class="next-btn" type="button" disabled onclick="nextQuestion()">السؤال التالي ←</button></div></div>
+        <div id="result" class="result" aria-live="polite"><div>نتيجتك</div><div class="score"><span id="score"></span> / 5</div><p id="resultText"></p><button class="primary-btn" type="button" onclick="startQuiz()">🔄 إعادة الاختبار</button></div>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+
+    <section id="sources-section" class="section" aria-labelledby="sources-title">
+      <div class="content-card">
+        <h2 id="sources-title">📚 المصادر والمراجع</h2><p>تم إعداد المحتوى بالاعتماد على مصادر معروفة في السيرة والحديث:</p>
+        <ul><li><strong>القرآن الكريم:</strong> سورة القلم، الآية 4.</li><li><strong>صحيح البخاري</strong> للإمام محمد بن إسماعيل البخاري.</li><li><strong>صحيح مسلم</strong> للإمام مسلم بن الحجاج.</li><li><strong>
+        <button class="back-btn" type="button" onclick="showSection('home-section')">↩ العودة للقائمة</button>
+      </div>
+    </section>
+  </main>
+
+  <footer><p class="student-line">اسم الطالبة: ميرا محمد عثمان حكمي. • الصف: السادس الابتدائي • المعلمة: أ. ليلى يحيى </p><p> مادة لغتي • الصف السادس الابتدائي تحفيظ </p></footer>
+
+  <script>
+    const sectionNames = { 'home-section': 'القائمة الرئيسية', 'intro-section': 'مقدمة المشروع', 'bio-section': 'رحلة السيرة', 'traits-section': 'الشمائل والأخلاق', 'moments-section': 'مواقف ودروس', 'values-section': 'قيم نتعلمها', 'words-section': 'كلمات ومعانٍ', 'quiz-section': 'تحدي السيرة', 'sources-section': 'المصادر والمراجع' };
+    let hasStartedQuiz = false;
+
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (!target) return;
+      target.classList.add('active');
+      document.getElementById('breadcrumb').textContent = sectionNames[id] || 'المشروع';
+      document.getElementById('homeButton').hidden = id === 'home-section';
+      if (id === 'quiz-section' && !hasStartedQuiz) startQuiz();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => { const heading = target.querySelector('h2'); if (heading) heading.focus?.(); }, 350);
+    }
+
+    document.querySelectorAll('.timeline-item, .value-card').forEach(item => {
+      item.addEventListener('click', () => item.setAttribute('aria-expanded', item.getAttribute('aria-expanded') !== 'true'));
+    });
+
+    const questions = [
+      { q: 'في أي عمر بدأ نزول الوحي على النبي ﷺ؟', a: ['30 سنة', '40 سنة', '50 سنة'], c: 1 },
+      { q: 'إلى أين هاجر النبي ﷺ؟', a: ['المدينة المنورة', 'الطائف', 'اليمن'], c: 0 },
+      { q: 'بماذا عُرف النبي ﷺ بين قومه قبل البعثة؟', a: ['الشجاع الكريم', 'الصادق الأمين', 'الحاكم العادل'], c: 1 },
+      { q: 'من القيم التي ظهرت في موقف فتح مكة؟', a: ['العفو والتسامح', 'الخصومة', 'الانتقام'], c: 0 },
+      { q: 'من أخلاق النبي ﷺ التي أثنى الله عليه بها؟', a: ['الخلق العظيم', 'كثرة المال', 'القوة فقط'], c: 0 }
+    ];
+    let current = 0, score = 0, answered = false;
+
+    function startQuiz() {
+      current = 0; score = 0; answered = false; hasStartedQuiz = true;
+      document.getElementById('result').style.display = 'none'; document.getElementById('quizBox').style.display = 'block';
+      renderQuestion();
+    }
+    function renderQuestion() {
+      const question = questions[current], percent = Math.round((current / questions.length) * 100);
+      document.getElementById('question').textContent = question.q;
+      document.getElementById('questionCount').textContent = `السؤال ${current + 1} من ${questions.length}`;
+      document.getElementById('progressPercent').textContent = `${percent}٪ مكتمل`;
+      const progress = document.getElementById('progressBar'); progress.setAttribute('aria-valuenow', current); progress.querySelector('span').style.width = `${percent}%`;
+      const box = document.getElementById('answers'); box.innerHTML = '';
+      const feedback = document.getElementById('feedback'); feedback.textContent = ''; feedback.className = 'feedback';
+      const next = document.getElementById('nextButton'); next.disabled = true; next.textContent = current === questions.length - 1 ? 'عرض النتيجة ←' : 'السؤال التالي ←';
+      answered = false;
+      question.a.forEach((text, index) => { const button = document.createElement('button'); button.type = 'button'; button.className = 'answer'; button.textContent = text; button.addEventListener('click', () => chooseAnswer(index, button)); box.appendChild(button); });
+    }
+    function chooseAnswer(index, button) {
+      if (answered) return;
+      answered = true; const question = questions[current], feedback = document.getElementById('feedback');
+      document.querySelectorAll('.answer').forEach(answer => answer.disabled = true);
+      if (index === question.c) { score++; button.classList.add('correct'); feedback.textContent = '✓ إجابة صحيحة! أحسنتِ.'; feedback.classList.add('good'); }
+      else { button.classList.add('wrong'); document.querySelectorAll('.answer')[question.c].classList.add('correct'); feedback.textContent = '✦ ليست الإجابة الصحيحة. راجعي المعلومة ثم انتقلي للسؤال التالي.'; feedback.classList.add('bad'); }
+      document.getElementById('nextButton').disabled = false;
+    }
+    function nextQuestion() { if (!answered) return; current++; if (current < questions.length) renderQuestion(); else finishQuiz(); }
+    function finishQuiz() {
+      const progress = document.getElementById('progressBar'); progress.setAttribute('aria-valuenow', questions.length); progress.querySelector('span').style.width = '100%';
+      document.getElementById('questionCount').textContent = `اكتمل الاختبار: ${questions.length} من ${questions.length}`; document.getElementById('progressPercent').textContent = '100٪ مكتمل';
+      document.getElementById('quizBox').style.display = 'none'; document.getElementById('result').style.display = 'block'; document.getElementById('score').textContent = score;
+      document.getElementById('resultText').textContent = score === 5 ? '🏆 ممتاز! معرفة رائعة بالسيرة النبوية.' : score >= 3 ? '⭐ رائع! لديكِ معرفة جيدة، ويمكنكِ اكتساب المزيد.' : '🌱 بداية جميلة! عودي إلى أقسام السيرة وحاولي مرة أخرى.';
+    }
+  </script>
+</body>
+</html>
